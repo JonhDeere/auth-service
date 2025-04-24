@@ -1,6 +1,7 @@
 package com.tfg.Authservice.auth.model.VO;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +15,10 @@ import lombok.*;
 
 @Data
 @Table(name = "roles")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity // Indica que esta clase es una entidad JPA y se mapeará a una tabla en la base de datos
 public class Role {
 
     @Id
@@ -26,7 +31,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     // Se establece que el nombre del rol no puede ser nulo y debe ser único en la base de datos
     @Column(name = "role_name", nullable = false, unique = true) 
-    private String roleName;
+    private RoleName roleName;
     
 
     public enum RoleName {
