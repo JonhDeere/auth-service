@@ -1,11 +1,11 @@
-package com.tfg.Authservice.auth.model.loader;
+package com.tfg.authservice.auth.model.loader;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.tfg.Authservice.auth.model.VO.Role;
-import com.tfg.Authservice.auth.model.VO.Role.RoleName;
-import com.tfg.Authservice.auth.repository.RoleRepository;
+import com.tfg.authservice.auth.model.VO.Role;
+import com.tfg.authservice.auth.model.VO.Role.RoleName;
+import com.tfg.authservice.auth.repository.RoleRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +17,7 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (roleRepository.findByName(RoleName.ROLE_DEVELOPER).isEmpty()) {
+        if (roleRepository.findByRoleName(RoleName.ROLE_DEVELOPER).isEmpty()) {
             Role developerRole = Role.builder()
                 .roleName(RoleName.ROLE_DEVELOPER)
                 .build();

@@ -1,4 +1,4 @@
-package com.tfg.Authservice.auth.security;
+package com.tfg.authservice.auth.security;
 
 import java.security.Key;
 import java.util.Date;

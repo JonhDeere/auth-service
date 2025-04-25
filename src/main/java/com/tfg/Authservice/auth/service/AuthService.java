@@ -1,23 +1,24 @@
-package com.tfg.Authservice.auth.service;
+package com.tfg.authservice.auth.service;
 
 
-import com.tfg.Authservice.auth.model.VO.Role;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.tfg.Authservice.auth.dto.AuthResponse;
-import com.tfg.Authservice.auth.dto.LoginRequest;
-import com.tfg.Authservice.auth.dto.RegisterRequest;
-import com.tfg.Authservice.auth.model.VO.User;
-import com.tfg.Authservice.auth.repository.RoleRepository;
-import com.tfg.Authservice.auth.repository.UserRepository;
-import com.tfg.Authservice.auth.security.JwtProvider;
+import com.tfg.authservice.auth.dto.AuthResponse;
+import com.tfg.authservice.auth.dto.LoginRequest;
+import com.tfg.authservice.auth.dto.RegisterRequest;
+import com.tfg.authservice.auth.model.VO.Role;
+import com.tfg.authservice.auth.model.VO.Role.RoleName;
+import com.tfg.authservice.auth.model.VO.User;
+import com.tfg.authservice.auth.repository.RoleRepository;
+import com.tfg.authservice.auth.repository.UserRepository;
+import com.tfg.authservice.auth.security.JwtProvider;
+
+import static com.tfg.authservice.auth.model.VO.Role.RoleName;
 
 import java.util.Collections; 
 
 import lombok.RequiredArgsConstructor;
-
-import static com.tfg.Authservice.auth.model.VO.Role.RoleName;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +38,7 @@ public class AuthService {
             throw new RuntimeException("Email is already in use");
         }
 
-        Role defaultRole = roleRepository.findByName(RoleName.ROLE_DEVELOPER)
+        Role defaultRole = roleRepository.findByRoleName(RoleName.ROLE_DEVELOPER)
                 .orElseThrow(() -> new RuntimeException("Default role not found"));
 
         User user = User.builder()
@@ -50,6 +51,7 @@ public class AuthService {
         userRepository.save(user);
 
         String token = jwtProvider.generateToken(user.getUsername());
+        System.out.println("JWT generado: " + token);
         return new AuthResponse(token, user.getUsername(), user.getEmail());
     }
 

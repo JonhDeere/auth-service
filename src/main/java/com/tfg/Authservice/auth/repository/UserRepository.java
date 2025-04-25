@@ -1,10 +1,10 @@
-package com.tfg.Authservice.auth.repository;
+package com.tfg.authservice.auth.repository;
 
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tfg.Authservice.auth.model.VO.User;
+import com.tfg.authservice.auth.model.VO.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     // Aquí puedes agregar métodos personalizados si es necesario

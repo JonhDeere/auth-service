@@ -1,4 +1,4 @@
-package com.tfg.Authservice.auth.dto;
+package com.tfg.authservice.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.tfg.Authservice.config;
+package com.tfg.authservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

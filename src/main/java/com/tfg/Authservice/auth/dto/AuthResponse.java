@@ -1,12 +1,14 @@
-package com.tfg.Authservice.auth.dto;
+package com.tfg.authservice.auth.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * Se envía al frontend tras login o registro exitoso. 
  * El token JWT irá en el header Authorization en futuras peticiones.
  */
 
+@Data
 @AllArgsConstructor
 public class AuthResponse {
 

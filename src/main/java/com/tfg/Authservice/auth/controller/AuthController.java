@@ -1,12 +1,12 @@
-package com.tfg.Authservice.auth.controller;
+package com.tfg.authservice.auth.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tfg.Authservice.auth.dto.AuthResponse;
-import com.tfg.Authservice.auth.dto.LoginRequest;
-import com.tfg.Authservice.auth.dto.RegisterRequest;
-import com.tfg.Authservice.auth.service.AuthService;
+import com.tfg.authservice.auth.dto.AuthResponse;
+import com.tfg.authservice.auth.dto.LoginRequest;
+import com.tfg.authservice.auth.dto.RegisterRequest;
+import com.tfg.authservice.auth.service.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor // Inyecta AuthService automáticamente (lombok)
 public class AuthController {
 
-    private AuthService authService; 
+    private final AuthService authService; // final necesario para inyección de dependencias
 
     
     /**

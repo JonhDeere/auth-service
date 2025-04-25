@@ -1,4 +1,4 @@
-package com.tfg.Authservice.auth.model.VO;
+package com.tfg.authservice.auth.model.VO;
 
 import jakarta.persistence.*;
 import lombok.*;
