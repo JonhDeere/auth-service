@@ -11,7 +11,7 @@
 	<groupId>com.tfg</groupId>
 	<artifactId>taskmanager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>taskmanager</name>
+	<name>authservice</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
