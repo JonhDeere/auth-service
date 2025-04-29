@@ -1,6 +1,7 @@
 package com.tfg.authservice.auth.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
@@ -18,6 +19,7 @@ import lombok.Data;
  * No permite campos en blanco.
  */
 @Data
+@AllArgsConstructor
 public class LoginRequest {
 
     @NotBlank(message = "Username is mandatory")

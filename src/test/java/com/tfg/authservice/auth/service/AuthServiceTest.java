@@ -2,7 +2,9 @@ package com.tfg.authservice.auth.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -71,6 +73,10 @@ public class AuthServiceTest {
         request.setPassword("1234");
     }
 
+    /** 
+     * TEST REGISTRO:
+     * 1. Si el username y el email no existen
+    */
     @Test
     void shouldRegisterUserSuccessfully() {
         // Aquí irían las aserciones y verificaciones necesarias para comprobar el registro exitoso
@@ -104,4 +110,100 @@ public class AuthServiceTest {
         // Comprueba que el metodo del objeto simulado, ha sido llamado...
         verify(userRepository).save(any(User.class)); // 
     }
+
+
+    /**
+     * 2. Si el username ya existe → excepción
+     */
+    @Test
+    void shouldThrowWhenUsernameAlreadyExists() {
+        when(userRepository.existsByUsername("testuser")).thenReturn(true);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            authService.register(request);
+        });
+
+        assertEquals("Username is already taken", exception.getMessage());
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+
+    /**
+     * 3. Si el email ya existe → excepción
+     */
+    @Test
+    void shouldThrowWhenEmailAlreadyExists() {
+        when(userRepository.existsByUsername("testuser")).thenReturn(false);
+        when(userRepository.existsByEmail("test@example.com")).thenReturn(true);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            authService.register(request);
+        });
+
+        assertEquals("Email is already in use", exception.getMessage());
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+
+    /** 
+     * TEST LOGIN EXITOSO
+    */
+    @Test
+    void shouldLoginSuccessfully() {
+        User user = new User();
+        user.setUsername("testuser");
+        user.setPassword("encrypted");
+        user.setEmail("test@example.com");
+
+        when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("1234", "encrypted")).thenReturn(true);
+        when(jwtProvider.generateToken("testuser")).thenReturn("fake-token");
+
+        AuthResponse response = authService.login(new com.tfg.authservice.auth.dto.LoginRequest("testuser", "1234"));
+
+        assertNotNull(response);
+        assertEquals("testuser", response.getUsername());
+        assertEquals("test@example.com", response.getEmail());
+        assertEquals("fake-token", response.getToken());
+    }
+
+    /**
+     * 1. Si el username no existe → excepción
+     */
+    @Test
+    void shouldThrowWhenUsernameNotFound() {
+        when(userRepository.findByUsername("testuser")).thenReturn(Optional.empty());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            authService.login(new com.tfg.authservice.auth.dto.LoginRequest("testuser", "1234"));
+        });
+
+        assertEquals("Invalid username or password", exception.getMessage());
+    }
+
+    /**
+     * 2. Si el password es incorrecto → excepción
+     */
+    @Test
+    void shouldThrowWhenPasswordDoesNotMatch() {
+        // Settea usario ficticio  registrado en BD
+        User user = new User();
+        user.setUsername("testuser");
+        user.setPassword("encrypted");
+
+        // Se usa Mokito para simular que esta en la BD
+        // authService.login("testuser", "1234") llama a userRepository.findByUsername("testuser"), devolverá el usuario simulado.
+        when(userRepository.findByUsername("testuser")).thenReturn(Optional.of(user));
+        when(passwordEncoder.matches("1234", "encrypted")).thenReturn(false);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            authService.login(new com.tfg.authservice.auth.dto.LoginRequest("testuser", "1234"));
+        });
+
+        assertEquals("Invalid username or password", exception.getMessage());
+    }
+
+
+
+
 }
