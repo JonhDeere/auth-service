@@ -34,3 +34,5 @@ build/
 
 ### Postgres ###
 .env
+
+src\main\resources\application.properties
